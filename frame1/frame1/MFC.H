@@ -1,5 +1,10 @@
 #include <iostream>
+#define FALSE 0
+#define TRUE 1
+
 using std::cout;
+
+typedef int BOOL;
 
 class CObject
 {
@@ -29,9 +34,12 @@ public:
 	CWinApp* m_pCurrentWinApp;
 
 public:
-	CWinApp::CWinApp() { m_pCurrentWinApp = this;
+	CWinApp() { m_pCurrentWinApp = this;
 	cout << "CWinApp Constructor \n"; } 
-	CWinApp::~CWinApp() { cout << "CWinApp Destructor \n";}
+	~CWinApp() { cout << "CWinApp Destructor \n";}
+	virtual BOOL InitApplication(){cout<<"CWinApp InitApplication!\n";}
+	virtual BOOL InitInstance(){cout<<"CWinApp InitInstance!\n";}
+	virtual BOOL Run(){cout<<"CWinApp Run\n";}
 };
 
 class CDocument:public CCmdTarget
@@ -46,13 +54,18 @@ class CWnd : public CCmdTarget
 public:
 CWnd::CWnd(){ cout << "CWnd Construct or \n"; }
 CWnd::~CWnd(){ cout << "CWind Destructor \n"; }
+virtual BOOL CreateEx(){cout<<"CFrameWnd CreateEx\n";
+PreCreateWindow();return TRUE;}
+virtual BOOL PreCreateWindow(){ cout << "CWind PreCreateWindow \n"; return TRUE;}
 };
 
 class CFrameWnd : public CWnd
 {
 public:
-	CFrameWnd::CFrameWnd(){cout << "CFrameWnd Constructor \n"; }
-	CFrameWnd::~CFrameWnd(){ cout  <<  "CFrameWnd Destructor  \n ";    }
+	CFrameWnd(){cout << "CFrameWnd Constructor \n"; }
+	~CFrameWnd(){ cout  <<  "CFrameWnd Destructor  \n ";    }
+	virtual BOOL Create(){cout<<"CFrameWnd Create\n";
+	CreateEx();return TRUE;}
 } ;
 
 
