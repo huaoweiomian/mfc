@@ -1,7 +1,8 @@
 #include <iostream>
+
 #define FALSE 0
 #define TRUE 1
-
+#pragma once
 using std::cout;
 
 typedef int BOOL;
@@ -9,63 +10,67 @@ typedef int BOOL;
 class CObject
 {
 public:
-	CObject::CObject() {cout<<"CObject Constructor \n";}
-	CObject::~CObject() {cout<<"CObject Destructor \n";}
+	CObject::CObject() {}
+	CObject::~CObject() {}
 };
 
 class CCmdTarget:public CObject
 {
 
 public:
-	CCmdTarget::CCmdTarget () {cout<<"CCmdTarget Constructor \n"; }
-	CCmdTarget::~CCmdTarget () {cout<<"CCmdTarget Destructor \n"; }
+	CCmdTarget::CCmdTarget () {}
+	CCmdTarget::~CCmdTarget () {}
 };
 
 class CWinThread:public CCmdTarget
 {
 public:
-	CWinThread::CWinThread(){ cout<<"CCWdinThread Constructor \n";}
-	CWinThread::~CWinThread(){ cout<<"CCWdinThread Destructor \n";}
+	CWinThread::CWinThread(){}
+	CWinThread::~CWinThread(){}
+	virtual BOOL InitInstance(){cout<<"CWinThread InitInstance!\n";return TRUE;}
+	virtual int Run(){cout<<"CWinThread Run\n";return 1;}
 };
 
+class CWnd;
 class CWinApp: public CWinThread
 {
 public:
 	CWinApp* m_pCurrentWinApp;
-
+	CWnd* m_pMainWnd;
 public:
-	CWinApp() { m_pCurrentWinApp = this;
-	cout << "CWinApp Constructor \n"; } 
+	CWinApp() { m_pCurrentWinApp = this;} 
 	~CWinApp() { cout << "CWinApp Destructor \n";}
-	virtual BOOL InitApplication(){cout<<"CWinApp InitApplication!\n";}
-	virtual BOOL InitInstance(){cout<<"CWinApp InitInstance!\n";}
-	virtual BOOL Run(){cout<<"CWinApp Run\n";}
+	virtual BOOL InitApplication(){cout<<"CWinApp InitApplication!\n";return TRUE;}
+	virtual BOOL InitInstance(){cout<<"CWinApp InitInstance!\n";return TRUE;}
+	virtual BOOL Run(){cout<<"CWinApp Run\n";return TRUE;}
+
 };
 
 class CDocument:public CCmdTarget
 {
 public:
-CDocument::CDocument() { cout << "CDocument Constructor \n"; }
-CDocument::~CDocument(){ cout << "CDocument Destructor \n"; }
+CDocument::CDocument() {}
+CDocument::~CDocument(){}
 } ;
 
 class CWnd : public CCmdTarget
 {
 public:
-CWnd::CWnd(){ cout << "CWnd Construct or \n"; }
-CWnd::~CWnd(){ cout << "CWind Destructor \n"; }
-virtual BOOL CreateEx(){cout<<"CFrameWnd CreateEx\n";
-PreCreateWindow();return TRUE;}
-virtual BOOL PreCreateWindow(){ cout << "CWind PreCreateWindow \n"; return TRUE;}
+CWnd::CWnd(){}
+CWnd::~CWnd(){}
+virtual BOOL Create();
+
+BOOL CreateEx();
+virtual BOOL PreCreateWindow();
 };
 
 class CFrameWnd : public CWnd
 {
 public:
-	CFrameWnd(){cout << "CFrameWnd Constructor \n"; }
-	~CFrameWnd(){ cout  <<  "CFrameWnd Destructor  \n ";    }
-	virtual BOOL Create(){cout<<"CFrameWnd Create\n";
-	CreateEx();return TRUE;}
+	CFrameWnd(){}
+	~CFrameWnd(){}
+	BOOL Create();
+	virtual BOOL PreCreateWindow();
 } ;
 
 
@@ -73,8 +78,8 @@ public:
 class CView : public  CWnd
 {
 public:
-CView::CView() {   cout<< "CView Constructor  \n";  }
-CView::~CView(){   cout<< "CView  Destructor  \n ";   }
+CView::CView() {}
+CView::~CView(){}
 } ;
 
 //    global   function 
