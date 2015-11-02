@@ -27,8 +27,8 @@ class CWinThread:public CCmdTarget
 public:
 	CWinThread::CWinThread(){}
 	CWinThread::~CWinThread(){}
-	virtual BOOL InitInstance(){cout<<"CWinThread InitInstance!\n";return TRUE;}
-	virtual int Run(){cout<<"CWinThread Run\n";return 1;}
+	virtual BOOL InitInstance(){cout<<"CWinThread::InitInstance!\n";return TRUE;}
+	virtual int Run(){cout<<"CWinThread::Run\n";return 1;}
 };
 
 class CWnd;
@@ -39,10 +39,10 @@ public:
 	CWnd* m_pMainWnd;
 public:
 	CWinApp() { m_pCurrentWinApp = this;} 
-	~CWinApp() { cout << "CWinApp Destructor \n";}
-	virtual BOOL InitApplication(){cout<<"CWinApp InitApplication!\n";return TRUE;}
-	virtual BOOL InitInstance(){cout<<"CWinApp InitInstance!\n";return TRUE;}
-	virtual BOOL Run(){cout<<"CWinApp Run\n";return TRUE;}
+	~CWinApp() {}
+	virtual BOOL InitApplication(){cout<<"CWinApp::InitApplication\n";return TRUE;}
+	virtual BOOL InitInstance(){cout<<"CWinApp::InitInstance\n";return TRUE;}
+	virtual int Run(){cout<<"CWinApp::Run\n";return CWinThread::Run();}
 
 };
 
@@ -56,12 +56,11 @@ CDocument::~CDocument(){}
 class CWnd : public CCmdTarget
 {
 public:
-CWnd::CWnd(){}
-CWnd::~CWnd(){}
-virtual BOOL Create();
-
-BOOL CreateEx();
-virtual BOOL PreCreateWindow();
+	CWnd::CWnd(){}
+	CWnd::~CWnd(){}
+	virtual BOOL Create();
+	BOOL CreateEx();
+	virtual BOOL PreCreateWindow();
 };
 
 class CFrameWnd : public CWnd
