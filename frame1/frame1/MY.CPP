@@ -12,10 +12,12 @@ CMyFrameWnd::CMyFrameWnd ()
 	cout <<"CMyFrameWnd::CMyFrameWnd  \n";
 	Create();
 }
- void main()
- {
+
+void main()
+{
 	CWinApp* pApp = AfxGetApp();
 	pApp->InitApplication();
 	pApp->InitInstance();
 	pApp->Run();
- }
+
+}
