@@ -3,14 +3,24 @@
 
  BOOL CMyWinApp::InitInstance()
  {
-	 cout<<"CMyWinApp::InitInstance\n";  
 	 m_pMainWnd = new CMyFrameWnd;
 	 return TRUE;
  }
 CMyFrameWnd::CMyFrameWnd ()
 {
-	cout <<"CMyFrameWnd::CMyFrameWnd  \n";
 	Create();
+}
+
+void PrintAllClasses()
+{
+	CRuntimeClass* pClass;
+	for (pClass = CRuntimeClass::pFirstClass; pClass != NULL;
+		pClass = pClass->m_pNextClass)
+	{
+		cout<<pClass->m_lpszClassName<<"\n";
+		cout<<pClass->m_nObjectSize<<"\n";
+		cout<<pClass->m_wSchema<<"\n";
+	}
 }
 
 void main()
@@ -20,4 +30,5 @@ void main()
 	pApp->InitInstance();
 	pApp->Run();
 
+	PrintAllClasses();
 }
