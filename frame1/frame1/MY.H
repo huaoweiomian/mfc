@@ -12,6 +12,7 @@ public:
 
 class CMyFrameWnd : public CFrameWnd
 {
+	DECLARE_DYNCREATE(CMyFrameWnd)
 public: 
 	CMyFrameWnd ();
 	~CMyFrameWnd (){}
@@ -19,6 +20,7 @@ public:
 
 class CMyDoc : public CDocument
 {
+	DECLARE_DYNCREATE(CMyDoc)
 public:
 	CMyDoc(){}
 	~CMyDoc(){}
@@ -26,6 +28,7 @@ public:
 
 class CMyView : public CView
 {
+	DECLARE_DYNCREATE(CMyView)
 public:
 	CMyView(){}
 	~CMyView(){}

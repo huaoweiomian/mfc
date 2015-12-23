@@ -19,7 +19,8 @@ struct CRuntimeClass
 	UINT m_wSchema;
 	CObject* (PASCAL*m_pfnCreateObject)();
 	CRuntimeClass* m_pBaseClass;
-
+	CObject* CreateObject();
+	static CRuntimeClass* PASCAL Load();
 	//CRuntimeClass objects linked together in simple list
 	static CRuntimeClass* pFirstClass;//start of class list
 	CRuntimeClass* m_pNextClass;//linked list of registered classes
@@ -51,6 +52,15 @@ public: \
 	_IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL)
 
 
+#define DECLARE_DYNCREATE(class_name) \
+	DECLARE_DYNAMIC(class_name) \
+	static CObject* PASCAL CreateObject();
+
+#define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
+	CObject* PASCAL class_name::CreateObject() \
+			{ return new class_name;} \
+	_IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, \
+			class_name::CreateObject)
 
 class CObject
 {
@@ -65,7 +75,7 @@ public:
 
 class CCmdTarget:public CObject
 {
-	DECLARE_DYNAMIC(CCmdTarget)
+	DECLARE_DYNCREATE(CCmdTarget)
 
 public:
 	CCmdTarget::CCmdTarget () {}
@@ -74,7 +84,7 @@ public:
 
 class CWinThread:public CCmdTarget
 {
-	DECLARE_DYNAMIC(CWinThread)
+	DECLARE_DYNCREATE(CWinThread)
 
 public:
 	CWinThread::CWinThread(){}
@@ -86,7 +96,7 @@ public:
 class CWnd;
 class CWinApp: public CWinThread
 {
-	DECLARE_DYNAMIC(CWinApp)
+	DECLARE_DYNCREATE(CWinApp)
 
 public:
 	CWinApp* m_pCurrentWinApp;
@@ -102,7 +112,7 @@ public:
 
 class CDocument:public CCmdTarget
 {
-	DECLARE_DYNAMIC(CDocument)
+	DECLARE_DYNCREATE(CDocument)
 
 public:
 CDocument::CDocument() {}
@@ -111,7 +121,7 @@ CDocument::~CDocument(){}
 
 class CWnd : public CCmdTarget
 {
-	DECLARE_DYNAMIC(CWnd)
+	DECLARE_DYNCREATE(CWnd)
 
 public:
 	CWnd::CWnd(){}
@@ -123,7 +133,7 @@ public:
 
 class CFrameWnd : public CWnd
 {
-	DECLARE_DYNAMIC(CFrameWnd)
+	DECLARE_DYNCREATE(CFrameWnd)
 
 public:
 	CFrameWnd(){}
@@ -136,7 +146,7 @@ public:
 
 class CView : public  CWnd
 {
-	DECLARE_DYNAMIC(CView)
+	DECLARE_DYNCREATE(CView)
 
 public:
 CView::CView() {}
