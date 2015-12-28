@@ -25,10 +25,22 @@ void PrintAllClasses()
 
 void main()
 {
-	CWinApp* pApp = AfxGetApp();
-	pApp->InitApplication();
-	pApp->InitInstance();
-	pApp->Run();
+	//CWinApp* pApp = AfxGetApp();
+	//pApp->InitApplication();
+	//pApp->InitInstance();
+	//pApp->Run();
 
-	PrintAllClasses();
+	//PrintAllClasses();
+	CRuntimeClass* pClassRef = NULL;
+	CObject* pOb = NULL;
+	while(1)
+	{
+		if ((pClassRef = CRuntimeClass::Load()) == NULL)
+		{
+			break;
+		}
+		pOb = pClassRef->CreateObject();
+		if(NULL != pOb)
+			pOb->SayHello();
+	}
 }

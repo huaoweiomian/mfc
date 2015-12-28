@@ -2,8 +2,11 @@
 #define PASCAL _stdcall
 #define FALSE 0
 #define TRUE 1
+#define TRACE1 printf
 #pragma once
 using std::cout;
+using std::endl;
+using std::cin;
 
 typedef int BOOL;
 typedef char* LPSTR;
@@ -68,6 +71,7 @@ public:
 	CObject::CObject() {}
 	CObject::~CObject() {}
 	virtual CRuntimeClass* GetRuntimeClass() const;
+	virtual void SayHello(){cout<<"Hello CObject "<<endl;}
 public:
 	BOOL IsKindOf(const CRuntimeClass*)const;
 	static CRuntimeClass classCObject;
@@ -80,6 +84,8 @@ class CCmdTarget:public CObject
 public:
 	CCmdTarget::CCmdTarget () {}
 	CCmdTarget::~CCmdTarget () {}
+	virtual void SayHello(){cout<<"Hello CCmdTarget "<<endl;}
+
 };
 
 class CWinThread:public CCmdTarget
@@ -90,6 +96,7 @@ public:
 	CWinThread::CWinThread(){}
 	CWinThread::~CWinThread(){}
 	virtual BOOL InitInstance(){return TRUE;}
+	virtual void SayHello(){cout<<"Hello CWinThread "<<endl;}
 	virtual int Run(){return 1;}
 };
 
@@ -107,6 +114,7 @@ public:
 	virtual BOOL InitApplication(){return TRUE;}
 	virtual BOOL InitInstance(){return TRUE;}
 	virtual int Run(){return CWinThread::Run();}
+	virtual void SayHello(){cout<<"Hello CWinApp "<<endl;}
 
 };
 
@@ -117,6 +125,8 @@ class CDocument:public CCmdTarget
 public:
 CDocument::CDocument() {}
 CDocument::~CDocument(){}
+virtual void SayHello(){cout<<"Hello CDocument "<<endl;}
+
 } ;
 
 class CWnd : public CCmdTarget
@@ -129,6 +139,8 @@ public:
 	virtual BOOL Create();
 	BOOL CreateEx();
 	virtual BOOL PreCreateWindow();
+	virtual void SayHello(){cout<<"Hello CWnd "<<endl;}
+
 };
 
 class CFrameWnd : public CWnd
@@ -139,6 +151,7 @@ public:
 	CFrameWnd(){}
 	~CFrameWnd(){}
 	BOOL Create();
+	virtual void SayHello(){cout<<"Hello CFrameWnd "<<endl;}
 	virtual BOOL PreCreateWindow();
 } ;
 
@@ -151,6 +164,7 @@ class CView : public  CWnd
 public:
 CView::CView() {}
 CView::~CView(){}
+virtual void SayHello(){cout<<"Hello CView "<<endl;}
 } ;
 
 //    global   function 

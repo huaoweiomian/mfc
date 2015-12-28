@@ -15,6 +15,37 @@ AFX_CLASSINIT::AFX_CLASSINIT(CRuntimeClass* pNewClass)
 	CRuntimeClass::pFirstClass = pNewClass;
 }
 
+CObject* CRuntimeClass::CreateObject()
+{
+	if (NULL == m_pfnCreateObject)
+	{
+		TRACE1("Error: Trying to create object which is not "
+			"DECLARE_DYNCREATE \\NOR DECLARE_SERIAL: %hs.\n",
+			m_lpszClassName);
+		return NULL;
+	}
+	CObject* pObject = NULL;
+	pObject = (*m_pfnCreateObject)();
+	return pObject;
+}
+
+CRuntimeClass* PASCAL CRuntimeClass::Load()
+{
+	char szClassName[64] = {0};
+	CRuntimeClass* pClass = NULL;
+	cout << "enter a class name... ";
+	cin >> szClassName;
+	for (pClass = pFirstClass; pClass != NULL; pClass = pClass->m_pNextClass)
+	{
+		if (0 == strcmp(szClassName, pClass->m_lpszClassName))
+		{
+			return pClass;
+		}
+	}
+	TRACE1("Error: Class not found: %s \n", szClassName);
+	return NULL;
+}
+
 CRuntimeClass* CObject::GetRuntimeClass() const
 {
 	return &CObject::classCObject;
