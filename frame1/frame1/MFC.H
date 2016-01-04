@@ -10,8 +10,13 @@ using std::cin;
 
 typedef int BOOL;
 typedef char* LPSTR;
-#define UINT int
-#define LPCSTR LPSTR
+typedef const char* LPCSTR;
+typedef unsigned long DWORD;
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned int UINT;
+typedef int INT;
+typedef long LONG;
 
 #define WM_COMMAND   0x0111
 #define CObjectid    0xffff
@@ -30,7 +35,26 @@ typedef char* LPSTR;
 
 
 
+#define DECLARE_MESSAGE_MAP() \
+	static AFX_MSGMAP_ENTRY _messageEntries[]; \
+	static AFX_MSGMAP messageMap; \
+	virtual AFX_MSGMAP* GetMessageMap() const;
 
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	AFX_MSGMAP* theClass::GetMessageMap() const \
+		{ return &theClass::messageMap; } \
+	AFX_MSGMAP theClass::messageMap = \
+	{ &(baseClass::messageMap), \
+			(AFX_MSGMAP_ENTRY*) &(theClass::_messageEntries) }; \
+	AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
+	{
+
+
+#define END_MESSAGE_MAP() \
+		{ 0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
+	};
+
+#include "AFXMSG_.H"
 class CObject;
 struct CRuntimeClass
 {
@@ -103,8 +127,9 @@ public:
 	CCmdTarget::CCmdTarget () {}
 	CCmdTarget::~CCmdTarget () {}
 	virtual void SayHello(){cout<<"Hello CCmdTarget "<<endl;}
-
+	DECLARE_MESSAGE_MAP()
 };
+typedef void (CCmdTarget::*AFX_PMSG)(void);
 
 class CWinThread:public CCmdTarget
 {
@@ -133,7 +158,7 @@ public:
 	virtual BOOL InitInstance(){return TRUE;}
 	virtual int Run(){return CWinThread::Run();}
 	virtual void SayHello(){cout<<"Hello CWinApp "<<endl;}
-
+	DECLARE_MESSAGE_MAP()
 };
 
 class CDocument:public CCmdTarget
@@ -145,6 +170,7 @@ CDocument::CDocument() {}
 CDocument::~CDocument(){}
 virtual void SayHello(){cout<<"Hello CDocument "<<endl;}
 
+	DECLARE_MESSAGE_MAP()
 } ;
 
 class CWnd : public CCmdTarget
@@ -159,7 +185,9 @@ public:
 	virtual BOOL PreCreateWindow();
 	virtual void SayHello(){cout<<"Hello CWnd "<<endl;}
 
+	DECLARE_MESSAGE_MAP()
 };
+typedef void (CCmdTarget::*AFX_PMSGW)(void);
 
 class CFrameWnd : public CWnd
 {
@@ -171,6 +199,7 @@ public:
 	BOOL Create();
 	virtual void SayHello(){cout<<"Hello CFrameWnd "<<endl;}
 	virtual BOOL PreCreateWindow();
+	DECLARE_MESSAGE_MAP()
 } ;
 
 
@@ -183,6 +212,7 @@ public:
 CView::CView() {}
 CView::~CView(){}
 virtual void SayHello(){cout<<"Hello CView "<<endl;}
+	DECLARE_MESSAGE_MAP()
 } ;
 
 //    global   function 
@@ -204,26 +234,7 @@ struct AFX_MSGMAP_ENTRY
 	AFX_PMSG pfn;
 };
 
-typedef void (CCmdTarget::*AFX_PMSG)(void);
 
-#define DECLARE_MESSAGE_MAP() \
-	static AFX_MSGMAP_ENTRY _messageEntries[]; \
-	static AFX_MSGMAP messageMap; \
-	virtual AFX_MSGMAP* GetMessageMap() const;
-
-#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
-	AFX_MSGMAP* theClass::GetMessageMap() const \
-		{ return &theClass::messageMap; } \
-	AFX_MSGMAP theClass::messageMap = \
-	{ &(baseClass::messageMap), \
-			(AFX_MSGMAP_ENTRY*) &(theClass::_messageEntries) }; \
-	AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
-	{
-
-
-#define END_MESSAGE_MAP() \
-		{ 0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
-	};
 
 
 
