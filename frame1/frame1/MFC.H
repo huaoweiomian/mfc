@@ -13,6 +13,24 @@ typedef char* LPSTR;
 #define UINT int
 #define LPCSTR LPSTR
 
+#define WM_COMMAND   0x0111
+#define CObjectid    0xffff
+#define  CCmdTargetid  1
+#define   CWinThreadid  11
+#define    CWinAppid     111
+#define     CMyWinAppid    1111
+#define   CWndid        12
+#define    CFrameWndid   121
+#define     CMyFreameWndid 1211
+#define    CViewid       122
+#define     CMyViewid      1221
+#define   CDocumentid   13
+#define    CMyDocid      131
+
+
+
+
+
 class CObject;
 struct CRuntimeClass
 {
@@ -170,8 +188,42 @@ virtual void SayHello(){cout<<"Hello CView "<<endl;}
 //    global   function 
 CWinApp* AfxGetApp () ;
 
+struct AFX_MSGMAP
+{
+	AFX_MSGMAP* pBaseMessageMap;
+	AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;
+	UINT nCode;
+	UINT nID;
+	UINT nLastID;
+	UINT nSig;
+	AFX_PMSG pfn;
+};
+
+typedef void (CCmdTarget::*AFX_PMSG)(void);
+
+#define DECLARE_MESSAGE_MAP() \
+	static AFX_MSGMAP_ENTRY _messageEntries[]; \
+	static AFX_MSGMAP messageMap; \
+	virtual AFX_MSGMAP* GetMessageMap() const;
+
+#define BEGIN_MESSAGE_MAP(theClass, baseClass) \
+	AFX_MSGMAP* theClass::GetMessageMap() const \
+		{ return &theClass::messageMap; } \
+	AFX_MSGMAP theClass::messageMap = \
+	{ &(baseClass::messageMap), \
+			(AFX_MSGMAP_ENTRY*) &(theClass::_messageEntries) }; \
+	AFX_MSGMAP_ENTRY theClass::_messageEntries[] = \
+	{
 
 
+#define END_MESSAGE_MAP() \
+		{ 0, 0, 0, 0, AfxSig_end, (AFX_PMSG)0 } \
+	};
 
 
 

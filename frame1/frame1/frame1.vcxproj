@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AFXMSG_.H" />
     <ClInclude Include="MFC.H" />
     <ClInclude Include="MY.H" />
   </ItemGroup>
