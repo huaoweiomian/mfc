@@ -9,6 +9,7 @@ public:
 	~CMyWinApp (){}
 	virtual BOOL InitInstance();
 	virtual void SayHello(){cout<<"Hello CMyWinApp"<<endl;}
+	DECLARE_MESSAGE_MAP()
 } ;
 
 class CMyFrameWnd : public CFrameWnd
@@ -18,6 +19,7 @@ public:
 	CMyFrameWnd ();
 	~CMyFrameWnd (){}
 	virtual void SayHello(){cout<<"Hello CMyFrameWnd"<<endl;}
+	DECLARE_MESSAGE_MAP()
 } ;
 
 class CMyDoc : public CDocument
@@ -27,6 +29,7 @@ public:
 	CMyDoc(){}
 	~CMyDoc(){}
 	virtual void SayHello(){cout<<"Hello CMyDoc"<<endl;}
+	DECLARE_MESSAGE_MAP()
 };
 
 class CMyView : public CView
@@ -36,6 +39,7 @@ public:
 	CMyView(){}
 	~CMyView(){}
 	virtual void SayHello(){cout<<"Hello CMyView"<<endl;}
+	DECLARE_MESSAGE_MAP()
 };
 
 void PrintAllClasses();

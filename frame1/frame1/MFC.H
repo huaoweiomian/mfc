@@ -26,7 +26,7 @@ typedef long LONG;
 #define     CMyWinAppid    1111
 #define   CWndid        12
 #define    CFrameWndid   121
-#define     CMyFreameWndid 1211
+#define     CMyFrameWndid 1211
 #define    CViewid       122
 #define     CMyViewid      1221
 #define   CDocumentid   13
@@ -38,7 +38,7 @@ typedef long LONG;
 #define DECLARE_MESSAGE_MAP() \
 	static AFX_MSGMAP_ENTRY _messageEntries[]; \
 	static AFX_MSGMAP messageMap; \
-	virtual AFX_MSGMAP* GetMessageMap() const;
+	virtual  AFX_MSGMAP* GetMessageMap() const;
 
 #define BEGIN_MESSAGE_MAP(theClass, baseClass) \
 	AFX_MSGMAP* theClass::GetMessageMap() const \
@@ -55,6 +55,26 @@ typedef long LONG;
 	};
 
 #include "AFXMSG_.H"
+class CCmdTarget;
+typedef void (CCmdTarget::*AFX_PMSG)(void);
+
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;
+	UINT nCode;
+	UINT nID;
+	UINT nLastID;
+	UINT nSig;
+	AFX_PMSG pfn;
+};
+struct AFX_MSGMAP
+{
+	AFX_MSGMAP* pBaseMessageMap;
+	AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+
+
 class CObject;
 struct CRuntimeClass
 {
@@ -129,7 +149,6 @@ public:
 	virtual void SayHello(){cout<<"Hello CCmdTarget "<<endl;}
 	DECLARE_MESSAGE_MAP()
 };
-typedef void (CCmdTarget::*AFX_PMSG)(void);
 
 class CWinThread:public CCmdTarget
 {
@@ -218,21 +237,6 @@ virtual void SayHello(){cout<<"Hello CView "<<endl;}
 //    global   function 
 CWinApp* AfxGetApp () ;
 
-struct AFX_MSGMAP
-{
-	AFX_MSGMAP* pBaseMessageMap;
-	AFX_MSGMAP_ENTRY* lpEntries;
-};
-
-struct AFX_MSGMAP_ENTRY
-{
-	UINT nMessage;
-	UINT nCode;
-	UINT nID;
-	UINT nLastID;
-	UINT nSig;
-	AFX_PMSG pfn;
-};
 
 
 
