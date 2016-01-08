@@ -17,6 +17,10 @@ typedef unsigned short WORD;
 typedef unsigned int UINT;
 typedef int INT;
 typedef long LONG;
+typedef UINT WPARAM;
+typedef LONG LPARAM;
+typedef LONG LRESULT;
+typedef int HWND;
 
 #define WM_COMMAND   0x0111
 #define CObjectid    0xffff
@@ -147,6 +151,7 @@ public:
 	CCmdTarget::CCmdTarget () {}
 	CCmdTarget::~CCmdTarget () {}
 	virtual void SayHello(){cout<<"Hello CCmdTarget "<<endl;}
+	virtual BOOL OnCmdMsg(UINT nID, int nCode);
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -188,6 +193,7 @@ public:
 CDocument::CDocument() {}
 CDocument::~CDocument(){}
 virtual void SayHello(){cout<<"Hello CDocument "<<endl;}
+virtual BOOL OnCmdMsg(UINT nID, int nCode);
 
 	DECLARE_MESSAGE_MAP()
 } ;
@@ -203,7 +209,9 @@ public:
 	BOOL CreateEx();
 	virtual BOOL PreCreateWindow();
 	virtual void SayHello(){cout<<"Hello CWnd "<<endl;}
-
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProce(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 typedef void (CCmdTarget::*AFX_PMSGW)(void);
@@ -213,12 +221,17 @@ class CFrameWnd : public CWnd
 	DECLARE_DYNCREATE(CFrameWnd)
 
 public:
+	CView* m_pViewActive;
 	CFrameWnd(){}
 	~CFrameWnd(){}
 	BOOL Create();
 	virtual void SayHello(){cout<<"Hello CFrameWnd "<<endl;}
+	CView* GetActiveView() const;
 	virtual BOOL PreCreateWindow();
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnCmdMsg(UINT nID, int nCode);
 	DECLARE_MESSAGE_MAP()
+	friend CView;
 } ;
 
 
@@ -226,16 +239,23 @@ public:
 class CView : public  CWnd
 {
 	DECLARE_DYNCREATE(CView)
-
+public:
+	CDocument* m_pDocument;
 public:
 CView::CView() {}
 CView::~CView(){}
+virtual BOOL OnCmdMsg(UINT nID, int nCode);
+
 virtual void SayHello(){cout<<"Hello CView "<<endl;}
 	DECLARE_MESSAGE_MAP()
+	friend CFrameWnd;
 } ;
 
 //    global   function 
 CWinApp* AfxGetApp () ;
+
+LRESULT AfxWndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, CWnd* pWnd);
+LRESULT AfxCallWndProc(CWnd* pWnd, HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 
 
