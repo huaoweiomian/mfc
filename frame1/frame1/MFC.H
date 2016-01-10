@@ -23,6 +23,9 @@ typedef LONG LRESULT;
 typedef int HWND;
 
 #define WM_COMMAND   0x0111
+#define WM_CREATE    0X0001
+#define WM_PAINT     0x004F
+#define WM_NOTIYFY   0x004E
 #define CObjectid    0xffff
 #define  CCmdTargetid  1
 #define   CWinThreadid  11
@@ -209,13 +212,13 @@ public:
 	BOOL CreateEx();
 	virtual BOOL PreCreateWindow();
 	virtual void SayHello(){cout<<"Hello CWnd "<<endl;}
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	virtual LRESULT DefWindowProce(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 typedef void (CCmdTarget::*AFX_PMSGW)(void);
-
+class CView;
 class CFrameWnd : public CWnd
 {
 	DECLARE_DYNCREATE(CFrameWnd)
